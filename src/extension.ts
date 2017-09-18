@@ -8,14 +8,6 @@ import {ExtensionContext, commands, StatusBarItem, workspace, window, StatusBarA
 // your extension is activated the very first time the command is executed
 export function activate(context: ExtensionContext) {
 
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "finder-me" is now active!');
-
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with  registerCommand
-    // The commandId parameter must match the command field in package.json
-
     let name = new FileName()
     let controller = new FileNameController(name)
     context.subscriptions.push(controller)
@@ -52,6 +44,8 @@ class FileName {
 
         let filePath = editor.document.fileName
         this._statusBarItem.text = filePath
+        this._statusBarItem.tooltip = 'Finder Me'
+        this._statusBarItem.command = 'extension.finderMe'
         this._statusBarItem.show()
     }
 
