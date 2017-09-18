@@ -2,7 +2,7 @@
     "name": "finder-me",
     "displayName": "Finder Me",
     "description": "Open current file in finder.",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "pario",
     "engines": {
         "vscode": "^1.16.0"
