@@ -43,7 +43,7 @@ class FileName {
         }
 
         let filePath = editor.document.fileName
-        this._statusBarItem.text = filePath
+        this._statusBarItem.text = `$(file-symlink-file) ${filePath}`
         this._statusBarItem.tooltip = 'Finder Me'
         this._statusBarItem.command = 'extension.finderMe'
         this._statusBarItem.show()
