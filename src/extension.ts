@@ -2,7 +2,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as open from 'open';
-import {ExtensionContext, commands, StatusBarItem, workspace, window, StatusBarAlignment, Disposable} from 'vscode';
+import {ExtensionContext, commands, StatusBarItem, workspace, window, StatusBarAlignment, Disposable, TextEditor} from 'vscode';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -12,6 +12,8 @@ export function activate(context: ExtensionContext) {
     let controller = new FileNameController(name)
     context.subscriptions.push(controller)
     context.subscriptions.push(name)
+
+    
 
     let disposable = commands.registerCommand('extension.finderMe', () => {
         // The code you place here will be executed every time your command is executed
@@ -56,9 +58,17 @@ class FileName {
 
 class FileNameController {
     private _disposable: Disposable
+    private _fileName: FileName
 
     constructor(fileName: FileName) {
-        fileName.showFileName()
+        this._fileName = fileName
+
+        let subscriptions: Disposable[] = []
+        this._fileName.showFileName()
+        window.onDidChangeActiveTextEditor(this._onEvent, this, subscriptions)
+    }
+    private _onEvent() {
+        this._fileName.showFileName()
     }
 
     dispose() {
