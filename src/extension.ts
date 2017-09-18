@@ -1,12 +1,12 @@
 'use strict';
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
 import * as open from 'open';
+import {ExtensionContext, commands, StatusBarItem, workspace, window, StatusBarAlignment, Disposable} from 'vscode';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: ExtensionContext) {
 
     // Use the console to output diagnostic information (console.log) and errors (console.error)
     // This line of code will only be executed once when your extension is activated
@@ -15,13 +15,18 @@ export function activate(context: vscode.ExtensionContext) {
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extension.sayHello', () => {
+
+    let name = new FileName()
+    let controller = new FileNameController(name)
+    context.subscriptions.push(controller)
+    context.subscriptions.push(name)
+
+    let disposable = commands.registerCommand('extension.finderMe', () => {
         // The code you place here will be executed every time your command is executed
 
-        // Display a message box to the user
-        var folders = vscode.workspace.workspaceFolders
+        var folders = workspace.workspaceFolders
         if (!folders) {
-            vscode.window.showWarningMessage('Not open in a folder.')
+            window.showWarningMessage('Not open in a folder.')
             return
         } 
         var path = folders[0].uri.path
@@ -29,6 +34,42 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     context.subscriptions.push(disposable);
+}
+
+class FileName {
+    private _statusBarItem: StatusBarItem;
+
+    public showFileName() {
+        if (!this._statusBarItem) {
+            this._statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
+        }
+
+        let editor = window.activeTextEditor
+        if (!editor) {
+            this._statusBarItem.hide()
+            return
+        }
+
+        let filePath = editor.document.fileName
+        this._statusBarItem.text = filePath
+        this._statusBarItem.show()
+    }
+
+    dispose() {
+        this._statusBarItem.dispose()
+    }
+}
+
+class FileNameController {
+    private _disposable: Disposable
+
+    constructor(fileName: FileName) {
+        fileName.showFileName()
+    }
+
+    dispose() {
+        this._disposable.dispose()
+    }
 }
 
 // this method is called when your extension is deactivated
