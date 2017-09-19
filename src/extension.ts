@@ -18,13 +18,17 @@ export function activate(context: ExtensionContext) {
     let disposable = commands.registerCommand('extension.finderMe', () => {
         // The code you place here will be executed every time your command is executed
 
-        var folders = workspace.workspaceFolders
-        if (!folders) {
-            window.showWarningMessage('Not open in a folder.')
+        let editor = window.activeTextEditor
+        if (!editor) {
+            window.showWarningMessage('No active editor.')
             return
-        } 
-        var path = folders[0].uri.path
-        open(folders[0].uri.path, 'Finder')
+        }
+        
+        let filePath = editor.document.fileName
+        let filePathArr = filePath.split('/')
+        filePathArr.splice(-1, 1)
+        filePath = filePathArr.join('/')
+        open(filePath, 'Finder')
     });
 
     context.subscriptions.push(disposable);
@@ -45,6 +49,7 @@ class FileName {
         }
 
         let filePath = editor.document.fileName
+        console.log(filePath.split('/'))
         this._statusBarItem.text = `$(file-symlink-file) ${filePath}`
         this._statusBarItem.tooltip = 'Finder Me'
         this._statusBarItem.command = 'extension.finderMe'
