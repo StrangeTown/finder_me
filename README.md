@@ -4,7 +4,7 @@
 
 ### What status bar look like:
 
-![alt text](https://raw.githubusercontent.com/StrangeTown/finder_me/master/screen.png)
+![alt text](https://raw.githubusercontent.com/StrangeTown/finder_me/master/images/screen.png)
 
 ### How to open active directory in Finder: 
 
