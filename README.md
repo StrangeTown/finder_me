@@ -10,6 +10,10 @@
 
 - Click the path name in status bar.
 
+![By Click](https://raw.githubusercontent.com/StrangeTown/finder_me/master/images/click.gif)
+
     Or
 
 - Press '⇧⌘P' and run the command named `Finder Me`
+
+![By Command](https://github.com/StrangeTown/finder_me/blob/master/images/command.gif?raw=true)
