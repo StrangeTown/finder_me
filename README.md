@@ -4,9 +4,9 @@
 
 ### What status bar look like:
 
-![alt text](https://github.com/StrangeTown/finder_me/blob/master/screen.png)
+![alt text](https://raw.githubusercontent.com/StrangeTown/finder_me/master/screen.png)
 
-### How to open directory in Finder: 
+### How to open active directory in Finder: 
 
 - Click the path name in status bar.
 
