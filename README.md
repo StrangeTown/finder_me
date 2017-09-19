@@ -12,7 +12,7 @@
 
 ![By Click](https://raw.githubusercontent.com/StrangeTown/finder_me/master/images/click.gif)
 
-    Or
+Or
 
 - Press '⇧⌘P' and run the command named `Finder Me`
 
