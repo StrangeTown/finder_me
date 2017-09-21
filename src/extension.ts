@@ -2,33 +2,34 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as open from 'open';
-import {ExtensionContext, commands, StatusBarItem, workspace, window, StatusBarAlignment, Disposable, TextEditor} from 'vscode';
+import { ExtensionContext, commands, StatusBarItem, window, StatusBarAlignment, Disposable, TextEditor } from 'vscode';
+
+
+function getDirectoryPath(filePath: string): string {
+    let filePathArr = filePath.split('/')
+    filePathArr.splice(-1, 1)
+    return filePathArr.join('/')
+}
+
+const finderCommand: string = 'extension.finderMe'
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: ExtensionContext) {
-
     let name = new FileName()
     let controller = new FileNameController(name)
     context.subscriptions.push(controller)
     context.subscriptions.push(name)
 
-    
-
-    let disposable = commands.registerCommand('extension.finderMe', () => {
-        // The code you place here will be executed every time your command is executed
-
-        let editor = window.activeTextEditor
+    let disposable = commands.registerCommand(finderCommand, () => {
+        const editor = window.activeTextEditor
         if (!editor) {
             window.showWarningMessage('No active editor.')
             return
         }
-        
-        let filePath = editor.document.fileName
-        let filePathArr = filePath.split('/')
-        filePathArr.splice(-1, 1)
-        filePath = filePathArr.join('/')
-        open(filePath, 'Finder')
+
+        const filePath = editor.document.fileName
+        open(getDirectoryPath(filePath), 'Finder')
     });
 
     context.subscriptions.push(disposable);
@@ -42,17 +43,16 @@ class FileName {
             this._statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
         }
 
-        let editor = window.activeTextEditor
+        const editor = window.activeTextEditor
         if (!editor) {
             this._statusBarItem.hide()
             return
         }
 
-        let filePath = editor.document.fileName
-        console.log(filePath.split('/'))
+        const filePath = editor.document.fileName
         this._statusBarItem.text = `$(file-symlink-file) ${filePath}`
         this._statusBarItem.tooltip = 'Finder Me'
-        this._statusBarItem.command = 'extension.finderMe'
+        this._statusBarItem.command = finderCommand
         this._statusBarItem.show()
     }
 
